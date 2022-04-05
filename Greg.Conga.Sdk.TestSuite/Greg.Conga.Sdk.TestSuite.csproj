@@ -61,7 +61,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Greg.Conga.Sdk-Net5\Greg.Conga.Sdk.csproj">
+    <ProjectReference Include="..\Greg.Conga.Sdk\Greg.Conga.Sdk.csproj">
       <Project>{6578196e-c280-42d9-a2c7-e37bf19228d2}</Project>
       <Name>Greg.Conga.Sdk</Name>
     </ProjectReference>
