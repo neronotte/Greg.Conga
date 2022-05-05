@@ -1,11 +1,13 @@
 ﻿using Greg.Conga.Sdk.Messages.Conga;
 using Greg.Conga.Sdk.Messages.Salesforce;
+using Greg.Conga.Sdk.Model;
 using Greg.Conga.Sdk.TestSuite.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
-namespace Greg.Conga.Sdk.TestSuite
+namespace Greg.Conga.Sdk
 {
 	[TestClass]
 	public class UnitTest1
@@ -63,7 +65,7 @@ namespace Greg.Conga.Sdk.TestSuite
 			var response = congaService.RetrieveMultiple(@"select Id, CreatedDate
 from Apttus_Proposal__Proposal__c
 order by CreatedDate desc
-limit 1000");
+limit 10");
 
 			Assert.IsNotNull(response);
 		}
@@ -201,6 +203,93 @@ limit 1000");
 			Assert.IsTrue(response.Success);
 			Assert.IsNotNull(response.Errors);
 			Assert.AreEqual(0, response.Errors.Length);
+		}
+
+
+		[TestMethod]
+		public void GetProduct_Test1_ShouldWork()
+		{
+			var congaService = GetNewService();
+
+			var productId = "01t7a00000AYmTgAAL"; // comevuoi luce 0322v1
+
+			var request1 = new GetProductRequest(productId);
+			var response1 = congaService.Execute<GetProductResponse>(request1);
+
+			Assert.IsNotNull(response1);
+
+			var attributes = response1.Data.AttributeGroups.SelectMany(x => x.AttributeGroup.Attributes).OrderBy(x => x.ToString()).ToList();
+
+
+			var request2 = new GetMultipleProductRulesRequest(productId);
+			var response2 = congaService.Execute<GetMultipleProductRulesResponse>(request2);
+
+			Assert.IsNotNull(response2);
+		}
+
+
+		[TestMethod]
+		public void Query_GetProductAttributeRules()
+		{
+			var congaService = GetNewService();
+
+			string productId = "01t7a00000AnInVAAV";
+
+			var request1 = new GetProductRequest(productId);
+
+			var response1 = congaService.Execute<GetProductResponse>(request1);
+
+			var productGroupArray = response1.Data.ProductGroups.Select(x => x.ProductGroupId).ToArray();
+
+
+
+
+
+
+
+			string[] productScopeArray1 = new[] { "", "All" };
+			string[] productScopeArray2 = new[] { productId };
+			string[] productScopeArray3 = new[] { "Commodity" };
+			string[] productScopeArray4 = productGroupArray;
+
+			var request = new CongaQueryRequest("Apttus_Config2__ProductAttributeRule__c");
+			request.AddCondition("Active", "Equal", true, true);
+
+			var filter1 = request.AddFilter("OR");
+			filter1.AddCondition("ProductScope", "In", productScopeArray1, string.Join(",", productScopeArray1));
+			filter1.AddCondition("ProductScope", "Includes", productScopeArray2, string.Join(",", productScopeArray2));
+
+			var filter2 = request.AddFilter("OR");
+			filter2.AddCondition("ProductFamilyScope", "In", productScopeArray1, string.Join(",", productScopeArray1));
+			filter2.AddCondition("ProductFamilyScope", "Includes", productScopeArray3, string.Join(",", productScopeArray3));
+
+			var filter3 = request.AddFilter("OR");
+			filter3.AddCondition("ProductGroupScope", "In", productScopeArray1, string.Join(",", productScopeArray1));
+			filter3.AddCondition("ProductGroupScope", "Includes", productScopeArray4, string.Join(",", productScopeArray4));
+
+			request.AddChild("Apttus_Config2__ProductAttributeRuleActions__r");
+
+			var response = congaService.Execute<CongaQueryResponse<Apttus_Config2__ProductAttributeRule__c>>(request);
+
+			Assert.IsNotNull(response);
+
+			var productAttributeRuleActionList = (from productAttributeRule in response.Data
+					   from productAttributeRuleAction in productAttributeRule.Apttus_Config2__ProductAttributeRuleActions__r.records
+					   orderby productAttributeRuleAction.Apttus_Config2__Action__c
+					   select productAttributeRuleAction).ToList();
+
+
+			var syntesys = (from para in productAttributeRuleActionList
+				select new {
+					Field = para.Apttus_Config2__Field__c,
+					Action = para.Apttus_Config2__Action__c,
+					Value = para.Apttus_Config2__ValueExpression__c
+				}).Distinct().ToList();
+
+
+			var actions = productAttributeRuleActionList.Select(x => x.Apttus_Config2__Action__c).Distinct().ToList();
+
+			Assert.IsNotNull(productAttributeRuleActionList);
 		}
 	}
 }

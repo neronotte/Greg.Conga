@@ -8,7 +8,7 @@
     <ProjectGuid>{BBB6DAB3-DE50-464D-9611-77E586666987}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Greg.Conga.Sdk.TestSuite</RootNamespace>
+    <RootNamespace>Greg.Conga.Sdk</RootNamespace>
     <AssemblyName>Greg.Conga.Sdk.TestSuite</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Factories\CongaCredentialsFactory.cs" />
     <Compile Include="Factories\CongaEndpointFactory.cs" />
+    <Compile Include="Factories\CongaServiceFactory.cs" />
+    <Compile Include="Services\ProdutDataValidationServiceTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
