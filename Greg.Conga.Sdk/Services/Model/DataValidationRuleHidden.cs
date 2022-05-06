@@ -16,14 +16,15 @@ namespace Greg.Conga.Sdk.Services.Model
 
 		public bool TryValidate(Dictionary<string, string> propertyDict, out string errorMessage)
 		{
-			if (propertyDict.ContainsKey(Field))
-			{
-				errorMessage = $"Field <{Field}> should not be provided!";
-				return false;
-			}
-
 			errorMessage = null;
-			return true;
+			if (!propertyDict.TryGetValue(Field, out string value))
+				return true;
+
+			if (string.IsNullOrWhiteSpace(value))
+				return true;
+
+			errorMessage = $"Field <{Field}> should not be provided!";
+			return false;
 		}
 	}
 }

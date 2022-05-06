@@ -1,0 +1,29 @@
+﻿namespace Greg.Conga.Sdk.Messages.Conga.QueryModel
+{
+	public enum ConditionOperator
+	{
+		Equal,
+		LessEqual,
+		Contains,
+		EndsWith,
+		NotEqual,
+		GreaterEqual,
+		DoesNotContain,
+		DoesNotEndWith,
+		GreaterThan,
+		Like,
+		BeginsWith,
+		In,
+		LessThan,
+		NotLike,
+		DoesNotBeginWith,
+		NotIn,
+		Null,
+		On,
+		LastXDays,
+		NextXDays,
+		NotNull,
+		Today,
+		Includes
+	}
+}

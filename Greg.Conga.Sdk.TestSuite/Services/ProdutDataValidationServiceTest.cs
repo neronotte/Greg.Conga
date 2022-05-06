@@ -7,9 +7,6 @@ namespace Greg.Conga.Sdk.Services
 	[TestClass]
 	public class ProdutDataValidationServiceTest
 	{
-		
-
-
 		[TestMethod]
 		public void RequiredFieldsMissing()
 		{

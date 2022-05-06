@@ -1,4 +1,5 @@
 ﻿using Greg.Conga.Sdk.Messages.Conga;
+using Greg.Conga.Sdk.Messages.Conga.QueryModel;
 using Greg.Conga.Sdk.Messages.Salesforce;
 using Greg.Conga.Sdk.Model;
 using Greg.Conga.Sdk.TestSuite.Factory;
@@ -10,7 +11,7 @@ using System.Net;
 namespace Greg.Conga.Sdk
 {
 	[TestClass]
-	public class UnitTest1
+	public class CongaServiceTest
 	{
 		private ICongaService GetNewService()
 		{
@@ -252,20 +253,23 @@ limit 10");
 			string[] productScopeArray3 = new[] { "Commodity" };
 			string[] productScopeArray4 = productGroupArray;
 
+			
+			
 			var request = new CongaQueryRequest("Apttus_Config2__ProductAttributeRule__c");
-			request.AddCondition("Active", "Equal", true, true);
 
-			var filter1 = request.AddFilter("OR");
-			filter1.AddCondition("ProductScope", "In", productScopeArray1, string.Join(",", productScopeArray1));
-			filter1.AddCondition("ProductScope", "Includes", productScopeArray2, string.Join(",", productScopeArray2));
+			request.AddCondition("Active", ConditionOperator.Equal, true);
 
-			var filter2 = request.AddFilter("OR");
-			filter2.AddCondition("ProductFamilyScope", "In", productScopeArray1, string.Join(",", productScopeArray1));
-			filter2.AddCondition("ProductFamilyScope", "Includes", productScopeArray3, string.Join(",", productScopeArray3));
+			var filter1 = request.AddOrFilter();
+			filter1.AddCondition("ProductScope", ConditionOperator.In, productScopeArray1);
+			filter1.AddCondition("ProductScope", ConditionOperator.Includes, productScopeArray2);
 
-			var filter3 = request.AddFilter("OR");
-			filter3.AddCondition("ProductGroupScope", "In", productScopeArray1, string.Join(",", productScopeArray1));
-			filter3.AddCondition("ProductGroupScope", "Includes", productScopeArray4, string.Join(",", productScopeArray4));
+			var filter2 = request.AddOrFilter();
+			filter2.AddCondition("ProductFamilyScope", ConditionOperator.In, productScopeArray1);
+			filter2.AddCondition("ProductFamilyScope", ConditionOperator.Includes, productScopeArray3);
+
+			var filter3 = request.AddOrFilter();
+			filter3.AddCondition("ProductGroupScope", ConditionOperator.In, productScopeArray1);
+			filter3.AddCondition("ProductGroupScope", ConditionOperator.Includes, productScopeArray4);
 
 			request.AddChild("Apttus_Config2__ProductAttributeRuleActions__r");
 
