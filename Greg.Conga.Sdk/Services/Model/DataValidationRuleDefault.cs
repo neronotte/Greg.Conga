@@ -21,9 +21,16 @@ namespace Greg.Conga.Sdk.Services.Model
 		{
 			errorMessage = null;
 
-			if (!propertyDict.ContainsKey(Field))
+			if (!propertyDict.TryGetValue(Field, out string value))
 			{
 				propertyDict[Field] = ValueString;
+				return true;
+			}
+
+			if (string.IsNullOrWhiteSpace(value))
+			{
+				propertyDict[Field] = ValueString;
+				return true;
 			}
 
 			return true;

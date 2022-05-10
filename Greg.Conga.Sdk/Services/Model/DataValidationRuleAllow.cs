@@ -36,10 +36,5 @@ namespace Greg.Conga.Sdk.Services.Model
 			errorMessage = $"Value not permitted for field <{Field}>, expected <{ValueString}>, actual <{value}>";
 			return false;
 		}
-
-		private string GetDebuggerDisplay()
-		{
-			return ToString();
-		}
 	}
 }
