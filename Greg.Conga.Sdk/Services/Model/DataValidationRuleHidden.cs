@@ -12,7 +12,7 @@ namespace Greg.Conga.Sdk.Services.Model
 		}
 
 		public string Field { get; }
-		public int Order { get; } = 4;
+		public int Order { get; } = 1;
 
 		public bool TryValidate(Dictionary<string, string> propertyDict, out string errorMessage)
 		{
@@ -23,7 +23,7 @@ namespace Greg.Conga.Sdk.Services.Model
 			if (string.IsNullOrWhiteSpace(value))
 				return true;
 
-			errorMessage = $"Field <{Field}> should not be provided!";
+			errorMessage = $"Field <{Field}> should not be provided (hidden)!";
 			return false;
 		}
 	}

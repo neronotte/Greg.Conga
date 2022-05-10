@@ -9,7 +9,7 @@ namespace Greg.Conga.Sdk.Services.Model
 		public string Field { get; }
 		public string ValueString { get; }
 
-		public int Order { get; } = 1;
+		public int Order { get; } = 3;
 
 		public DataValidationRuleDefault(string field, string valueString)
 		{

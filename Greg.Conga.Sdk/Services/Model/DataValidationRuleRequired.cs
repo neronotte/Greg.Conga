@@ -12,7 +12,7 @@ namespace Greg.Conga.Sdk.Services.Model
 		}
 
 		public string Field { get; }
-		public int Order { get; } = 2;
+		public int Order { get; } = 4;
 
 
 		public bool TryValidate(Dictionary<string, string> propertyDict, out string errorMessage)
