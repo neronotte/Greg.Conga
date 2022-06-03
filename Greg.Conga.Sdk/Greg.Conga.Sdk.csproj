@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>net48</TargetFrameworks>
     <RootNamespace>Greg.Conga.Sdk</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0-alpha1</Version>
+    <Company>_neronotte</Company>
+    <Authors>_neronotte</Authors>
+    <PackageProjectUrl>https://github.com/neronotte/Greg.Conga</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/neronotte/Greg.Conga.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+    <PackageTags>Conga Salesforce SFDC SDK API</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

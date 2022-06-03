@@ -1,4 +1,5 @@
-﻿using Greg.Conga.Sdk.Messages.Conga;
+﻿using Greg.Conga.Sdk.Messages;
+using Greg.Conga.Sdk.Messages.Conga;
 using Greg.Conga.Sdk.Messages.Conga.QueryModel;
 using Greg.Conga.Sdk.Messages.Salesforce;
 using Greg.Conga.Sdk.Model;
@@ -21,6 +22,26 @@ namespace Greg.Conga.Sdk
 			var congaService = new CongaService(endpoint);
 			congaService.Authenticate(credentials);
 			return congaService;
+		}
+
+		
+		[TestMethod]
+		public void PaginatedQueryExample()
+		{
+			var congaService = GetNewService();
+
+			var request = new QueryRequest("select Id, AccountNumber, CreatedDate from account");
+			var resultList = new List<DynamicEntity>();
+			do
+			{
+				var response = congaService.Execute<QueryResponse>(request);
+				resultList.AddRange(response.Records);
+				request = response.GetNextPage();
+			}
+			while (request != null);
+
+
+			Assert.AreNotEqual(0, resultList.Count);
 		}
 
 

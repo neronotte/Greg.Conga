@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Greg.Conga.Sdk.Messages.Conga
 {

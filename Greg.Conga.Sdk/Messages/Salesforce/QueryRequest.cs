@@ -2,6 +2,20 @@
 {
 	public class QueryRequest : SalesforceRequest
 	{
+		internal static QueryRequest FromResponse<T>(QueryResponse<T> response)
+		{
+			if (string.IsNullOrWhiteSpace(response.NextRecordsUrl)) return null;
+
+			var startIndex = response.NextRecordsUrl.IndexOf("/query");
+			var urlPart = response.NextRecordsUrl.Substring(startIndex);
+
+			return new QueryRequest()
+			{
+				UrlPart = urlPart
+			};
+		}
+
+
 		public QueryRequest() : base("GET", "/query?q={query}")
 		{
 			HasBody = false;

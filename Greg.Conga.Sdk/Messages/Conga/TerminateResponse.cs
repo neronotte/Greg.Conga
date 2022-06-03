@@ -2,7 +2,7 @@
 
 namespace Greg.Conga.Sdk.Messages.Conga
 {
-	public class SwapResponse : CongaRestResponse<Dictionary<string, DynamicEntity>>
+	public class TerminateResponse : CongaRestResponse<Dictionary<string, DynamicEntity>>
 	{
 	}
 }

@@ -27,10 +27,10 @@ namespace Greg.Conga.Sdk.Messages
 		public bool HasBody { get; protected set; }
 
 		[JsonIgnore]
-		public string Method { get; }
+		public string Method { get; protected set; }
 
 		[JsonIgnore]
-		public string UrlPart { get; }
+		public string UrlPart { get; protected set; }
 
 
 
