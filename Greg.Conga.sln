@@ -7,6 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Greg.Conga.Sdk", "Greg.Cong
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greg.Conga.Sdk.TestSuite", "Greg.Conga.Sdk.TestSuite\Greg.Conga.Sdk.TestSuite.csproj", "{BBB6DAB3-DE50-464D-9611-77E586666987}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greg.Conga.WinUI", "Greg.Conga.WinUI\Greg.Conga.WinUI.csproj", "{AB5D66F7-6458-4EA4-9087-ABE1610A8678}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7D59B04-5719-48DE-84BD-CC6BA8CAC6B2}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +29,10 @@ Global
 		{BBB6DAB3-DE50-464D-9611-77E586666987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB6DAB3-DE50-464D-9611-77E586666987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB6DAB3-DE50-464D-9611-77E586666987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5D66F7-6458-4EA4-9087-ABE1610A8678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5D66F7-6458-4EA4-9087-ABE1610A8678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5D66F7-6458-4EA4-9087-ABE1610A8678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5D66F7-6458-4EA4-9087-ABE1610A8678}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
