@@ -5,7 +5,10 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Greg.Conga.Sdk
 {
@@ -19,6 +22,10 @@ namespace Greg.Conga.Sdk
 		public CongaEndpoint Endpoint { get; }
 
 		public LoginResponse Credentials { get; private set; }
+
+
+
+
 
 		public void Authenticate(CongaCredentials credentials)
 		{
@@ -41,14 +48,12 @@ namespace Greg.Conga.Sdk
 				.ToString();
 
 
-			var request = WebRequest.Create(uri);
-			request.Method = "POST";
-			using (var response = request.GetResponse())
-			using (var reader = new StreamReader(response.GetResponseStream()))
+			using (var client = new HttpClient())
+			using (var response = client.PostAsync(uri, null).GetAwaiter().GetResult())
 			{
-				var responseText = reader.ReadToEnd();
-				var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseText);
+				var responseText = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
+				var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseText);
 				if (loginResponse == null)
 					throw new AuthenticationException("Response empty!");
 
@@ -61,9 +66,47 @@ namespace Greg.Conga.Sdk
 		}
 
 
+		public async Task AuthenticateAsync(CongaCredentials credentials)
+		{
+			if (credentials is null)
+			{
+				throw new ArgumentNullException(nameof(credentials));
+			}
+
+			await AuthenticateAsync(credentials.Username, credentials.Password);
+		}
+
+		public async Task AuthenticateAsync(string username, string password)
+		{
+			var uri = new StringBuilder()
+				.Append(this.Endpoint.AuthenticationEndpoint).Append("?grant_type=password")
+				.Append("&client_id=").Append(this.Endpoint.AuthenticationClientId)
+				.Append("&client_secret=").Append(this.Endpoint.AuthenticationSecret)
+				.Append("&username=").Append(username)
+				.Append("&password=").Append(password)
+				.ToString();
+
+
+			using (var client = new HttpClient())
+			using (var response = await client.PostAsync(uri, null))
+			{
+				var responseText = await response.Content.ReadAsStringAsync();
+
+				var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseText);
+				if (loginResponse == null)
+					throw new AuthenticationException("Response empty!");
+
+				if (!string.IsNullOrWhiteSpace(loginResponse.Error))
+					throw new AuthenticationException($"{loginResponse.Error}: {loginResponse.ErrorDescription}");
+
+				this.Credentials = loginResponse;
+			}
+		}
+
+
 
 		public TResponse Execute<TResponse>(BaseRequest request)
-			where TResponse : BaseResponse
+			where TResponse : BaseResponse, new()
 		{
 			if (this.Credentials == null)
 				throw new AuthenticationException("Please call Authenticate(...) method first!");
@@ -75,83 +118,161 @@ namespace Greg.Conga.Sdk
 			};
 			var uri = request.GetUri(this.Endpoint);
 
-			var webRequest = WebRequest.Create(uri);
-			webRequest.Method = request.Method;
-			webRequest.Headers.Add("x-storefront", this.Endpoint.Storefront);
-			webRequest.ContentType = "application/json";
-			webRequest.Headers.Add("Authorization", "Bearer " + this.Credentials.AccessToken);
 
-			if (request.HasBody)
+			using (var client = new HttpClient())
+			using (var request1 = new HttpRequestMessage(request.Method, uri))
 			{
-				using (var writer = new StreamWriter(webRequest.GetRequestStream()))
-				{
-					var requestText = request.ToSerializedObject();
-					writer.Write(requestText);
-					writer.Flush();
-				}
-			}
+				request1.Headers.Add("x-storefront", this.Endpoint.Storefront);
+				request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.Credentials.AccessToken);
 
-			try
-			{
-				using (var webResponse = (HttpWebResponse)webRequest.GetResponse())
+				if (request.HasBody)
 				{
-					return GetCongaResponse<TResponse>(webResponse, settings);
+					request1.Content = new StringContent(request.ToSerializedObject(), Encoding.UTF8, "application/json");
 				}
-			}
-			catch (WebException ex)
-			{
-				using (var webResponse = (HttpWebResponse)ex.Response)
+
+
+				using (var response = client.SendAsync(request1).GetAwaiter().GetResult())
 				{
-					return GetCongaResponse<TResponse>(webResponse, settings);
+					try
+					{
+						response.EnsureSuccessStatusCode();
+
+						return GetCongaResponse<TResponse>(response, settings);
+					}
+					catch (HttpRequestException ex)
+					{
+						var innerResponse = GetCongaResponse<TResponse>(response, settings);
+						throw new SdkException(request, innerResponse, ex.Message);
+					}
 				}
 			}
 		}
 
 
-
-		private TResponse GetCongaResponse<TResponse>(HttpWebResponse webResponse, JsonSerializerSettings settings)
-				where TResponse : BaseResponse
+		public async Task<TResponse> ExecuteAsync<TResponse>(BaseRequest request)
+			where TResponse : BaseResponse, new()
 		{
-			using (var reader = new StreamReader(webResponse.GetResponseStream()))
+			if (this.Credentials == null)
+				throw new AuthenticationException("Please call Authenticate(...) method first!");
+
+
+			var settings = new JsonSerializerSettings
 			{
-				var responseText = reader.ReadToEnd();
-				// the response is a singl object
-				if (!responseText.StartsWith("["))
+				NullValueHandling = NullValueHandling.Ignore
+			};
+			var uri = request.GetUri(this.Endpoint);
+
+
+			using (var client = new HttpClient())
+			using (var request1 = new HttpRequestMessage(request.Method, uri))
+			{
+				request1.Headers.Add("x-storefront", this.Endpoint.Storefront);
+				request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.Credentials.AccessToken);
+
+				if (request.HasBody)
 				{
-					var congaResponse = JsonConvert.DeserializeObject<TResponse>(responseText, settings);
-					congaResponse.Raw = responseText;
-					congaResponse.StatusCode = webResponse.StatusCode;
-					congaResponse.StatusDescription = webResponse.StatusDescription;
-					return congaResponse;
+					request1.Content = new StringContent(request.ToSerializedObject(), Encoding.UTF8, "application/json");
 				}
 
 
-
-				// the response is an array
-				var type = typeof(TResponse).MakeArrayType();
-				var congaResponseArray = (TResponse[])JsonConvert.DeserializeObject(responseText, type, settings);
-
-
-
-				// the response array is not empty
-				if (congaResponseArray?.Length > 0)
+				using (var response = await client.SendAsync(request1))
 				{
-					var congaResponse = congaResponseArray[0];
-					congaResponse.Raw = responseText;
-					congaResponse.StatusCode = webResponse.StatusCode;
-					congaResponse.StatusDescription = webResponse.StatusDescription;
-					return congaResponse;
+					try
+					{
+						response.EnsureSuccessStatusCode();
+
+						return await GetCongaResponseAsync<TResponse>(response, settings);
+					}
+					catch (HttpRequestException ex)
+					{
+						var innerResponse = await GetCongaResponseAsync<TResponse>(response, settings);
+						throw new SdkException(request, innerResponse, ex.Message);
+					}
 				}
-
-
-
-				// the response array is empty
-				var congaResponse1 = Activator.CreateInstance<TResponse>();
-				congaResponse1.Raw = responseText;
-				congaResponse1.StatusCode = webResponse.StatusCode;
-				congaResponse1.StatusDescription = webResponse.StatusDescription;
-				return congaResponse1;
 			}
+		}
+
+
+		private static async Task<TResponse> GetCongaResponseAsync<TResponse>(HttpResponseMessage webResponse, JsonSerializerSettings settings)
+				where TResponse : BaseResponse, new()
+		{
+			string responseText = null;
+			try
+			{
+				responseText = await webResponse.Content.ReadAsStringAsync();
+
+			}
+			catch (ObjectDisposedException)
+			{
+				// may happen if the server returned no response
+			}
+			return ParseResponseText<TResponse>(webResponse, settings, responseText);
+		}
+
+		private static TResponse GetCongaResponse<TResponse>(HttpResponseMessage webResponse, JsonSerializerSettings settings)
+				where TResponse : BaseResponse, new()
+		{
+			string responseText = null;
+			try
+			{
+				responseText = webResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+			}
+			catch (ObjectDisposedException)
+			{
+				// may happen if the server returned no response
+			}
+			return ParseResponseText<TResponse>(webResponse, settings, responseText);
+		}
+
+
+		private static TResponse ParseResponseText<TResponse>(HttpResponseMessage webResponse, JsonSerializerSettings settings, string responseText) 
+			where TResponse : BaseResponse, new()
+		{
+			if (responseText == null)
+			{
+				var congaResponse = new TResponse();
+				congaResponse.StatusCode = webResponse.StatusCode;
+				congaResponse.StatusDescription = webResponse.ReasonPhrase;
+				return congaResponse;
+			}
+
+
+			// the response is a singl object
+			if (!responseText.StartsWith("[", StringComparison.Ordinal))
+			{
+				var congaResponse = JsonConvert.DeserializeObject<TResponse>(responseText, settings);
+				congaResponse.Raw = responseText;
+				congaResponse.StatusCode = webResponse.StatusCode;
+				congaResponse.StatusDescription = webResponse.ReasonPhrase;
+				return congaResponse;
+			}
+
+
+
+			// the response is an array
+			var type = typeof(TResponse).MakeArrayType();
+			var congaResponseArray = (TResponse[])JsonConvert.DeserializeObject(responseText, type, settings);
+
+
+
+			// the response array is not empty
+			if (congaResponseArray?.Length > 0)
+			{
+				var congaResponse = congaResponseArray[0];
+				congaResponse.Raw = responseText;
+				congaResponse.StatusCode = webResponse.StatusCode;
+				congaResponse.StatusDescription = webResponse.ReasonPhrase;
+				return congaResponse;
+			}
+
+
+
+			// the response array is empty
+			var congaResponse1 = Activator.CreateInstance<TResponse>();
+			congaResponse1.Raw = responseText;
+			congaResponse1.StatusCode = webResponse.StatusCode;
+			congaResponse1.StatusDescription = webResponse.ReasonPhrase;
+			return congaResponse1;
 		}
 	}
 }

@@ -1,17 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Net.Http;
 
 namespace Greg.Conga.Sdk.Messages
 {
 	public abstract class BaseRequest
 	{
-		public BaseRequest(string method, string urlPart)
+		public BaseRequest(HttpMethod method, string urlPart)
 		{
-			if (string.IsNullOrWhiteSpace(method))
-			{
-				throw new ArgumentException($"'{nameof(method)}' cannot be null or whitespace.", nameof(method));
-			}
-
 			if (string.IsNullOrWhiteSpace(urlPart))
 			{
 				throw new ArgumentException($"'{nameof(urlPart)}' cannot be null or whitespace.", nameof(urlPart));
@@ -27,7 +23,7 @@ namespace Greg.Conga.Sdk.Messages
 		public bool HasBody { get; protected set; }
 
 		[JsonIgnore]
-		public string Method { get; protected set; }
+		public HttpMethod Method { get; protected set; }
 
 		[JsonIgnore]
 		public string UrlPart { get; protected set; }

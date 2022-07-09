@@ -30,7 +30,7 @@ namespace Greg.Conga.Sdk
 		{
 			var congaService = GetNewService();
 
-			var request = new QueryRequest("select Id, AccountNumber, CreatedDate from account");
+			var request = new QueryRequest("select Id, AccountNumber, CreatedDate, from account");
 			var resultList = new List<DynamicEntity>();
 			do
 			{
@@ -75,7 +75,7 @@ namespace Greg.Conga.Sdk
 			var response = congaService.Execute<GetActivePricelistResponse>(request);
 			Assert.IsNotNull(response);
 			Assert.AreEqual(200, response.Status);
-			Assert.AreEqual("success", response.StatusDescription);
+			Assert.AreEqual("OK", response.StatusDescription);
 		}
 
 

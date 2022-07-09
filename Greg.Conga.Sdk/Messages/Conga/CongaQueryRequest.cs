@@ -11,7 +11,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 		private readonly string apiName;
 
 
-		public CongaQueryRequest(string entityName) : base("POST", $"/{entityName}/query")
+		public CongaQueryRequest(string entityName) : base(System.Net.Http.HttpMethod.Post, $"/{entityName}/query")
 		{
 			if (string.IsNullOrWhiteSpace(entityName))
 				throw new ArgumentNullException(nameof(entityName));

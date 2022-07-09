@@ -5,6 +5,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 	public class GetProductResponse : CongaRestResponse<GetProductResponse.MyData>
 	{
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 
 
 
@@ -160,7 +161,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 			public bool ThreeColumnAttributeDisplay { get; set; }
 			public string CreatedById { get; set; }
 			public string OwnerId { get; set; }
-			public Attribute[] Attributes { get; set; }
+			public AttributeObject[] Attributes { get; set; }
 			public DateTime SystemModstamp { get; set; }
 			public string Name { get; set; }
 			public bool TwoColumnAttributeDisplay { get; set; }
@@ -170,7 +171,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 			public string Description { get; set; }
 		}
 
-		public class Attribute
+		public class AttributeObject
 		{
 			public string APTS_Ext_ID { get; set; }
 			public string LastModifiedById { get; set; }
@@ -242,7 +243,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 			public Optiongroup1 OptionGroup { get; set; }
 			public DateTime LastModifiedDate { get; set; }
 			public string ModifiableType { get; set; }
-			public Option[] Options { get; set; }
+			public OptionObject[] Options { get; set; }
 		}
 
 		public class Optiongroup1
@@ -275,7 +276,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 			public string APTS_Ext_ID { get; set; }
 		}
 
-		public class Option
+		public class OptionObject
 		{
 			public string LastModifiedById { get; set; }
 			public string egl_product_recordtype { get; set; }
@@ -603,5 +604,6 @@ namespace Greg.Conga.Sdk.Messages.Conga
 			public DateTime LastModifiedDate { get; set; }
 		}
 
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 	}
 }

@@ -4,6 +4,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class GetActivePricelistResponseData
 	{
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 		public string Id { get; set; }
 		public string OwnerId { get; set; }
 		public string Name { get; set; }
@@ -18,5 +19,6 @@ namespace Greg.Conga.Sdk.Messages.Conga
 		public string LastModifiedById { get; set; }
 		public DateTime? SystemModstamp { get; set; }
 		public string IsDeleted { get; set; }
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 	}
 }

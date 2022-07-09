@@ -1,8 +1,10 @@
-﻿namespace Greg.Conga.Sdk.Messages.Salesforce
+﻿using System.Net.Http;
+
+namespace Greg.Conga.Sdk.Messages.Salesforce
 {
 	public abstract class SalesforceRequest : BaseRequest
 	{
-		public SalesforceRequest(string method, string urlPart) : base(method, urlPart)
+		public SalesforceRequest(HttpMethod method, string urlPart) : base(method, urlPart)
 		{
 		}
 

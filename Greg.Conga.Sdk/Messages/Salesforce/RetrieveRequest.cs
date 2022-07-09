@@ -10,7 +10,7 @@ namespace Greg.Conga.Sdk.Messages.Salesforce
 	/// <see cref="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm"/>
 	public class RetrieveRequest : SalesforceRequest
 	{
-		public RetrieveRequest(string entityName, string id) : base("GET", $"/sobjects/{entityName}/{id}?fields=")
+		public RetrieveRequest(string entityName, string id) : base(System.Net.Http.HttpMethod.Get, $"/sobjects/{entityName}/{id}?fields=")
 		{
 			if (string.IsNullOrWhiteSpace(entityName))
 			{
