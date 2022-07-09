@@ -13,7 +13,7 @@
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <PackageTags>Conga Salesforce SFDC SDK API</PackageTags>
     <ApplicationIcon>blog.ico</ApplicationIcon>
-    <PackageIcon>blog3.png</PackageIcon>
+    <PackageIcon></PackageIcon>
     <Description>Simple and lightweight .NET SDK to access Conga and SFDC API</Description>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
@@ -21,13 +21,6 @@
 
   <ItemGroup>
     <Content Include="blog.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\..\Users\riccardo.gregori\OneDrive\Pictures\blog3.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
