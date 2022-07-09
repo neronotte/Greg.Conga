@@ -4,7 +4,7 @@
     <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <RootNamespace>Greg.Conga.Sdk</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.0-alpha1</Version>
+    <Version>1.0.2-alpha</Version>
     <Company>_neronotte</Company>
     <Authors>_neronotte</Authors>
     <PackageProjectUrl>https://github.com/neronotte/Greg.Conga</PackageProjectUrl>
@@ -17,6 +17,7 @@
     <Description>Simple and lightweight .NET SDK to access Conga and SFDC API</Description>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
