@@ -47,16 +47,17 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.flow.BackColor = System.Drawing.Color.White;
-			this.flow.Location = new System.Drawing.Point(0, 20);
+			this.flow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.flow.Location = new System.Drawing.Point(3, 4);
 			this.flow.Name = "flow";
-			this.flow.Size = new System.Drawing.Size(276, 80);
+			this.flow.Size = new System.Drawing.Size(270, 93);
 			this.flow.TabIndex = 1;
 			// 
 			// IntellisensePanel
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.Color.Red;
+			this.BackColor = System.Drawing.Color.LightGray;
 			this.Controls.Add(this.flow);
 			this.Controls.Add(this.lblPosition);
 			this.Name = "IntellisensePanel";

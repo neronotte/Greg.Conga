@@ -55,7 +55,6 @@ namespace Greg.Conga.WinUI
 			this.textControl.KeyUp += this.OnTextCotrolKeyUp;
 			this.textControl.KeyUp += this.OnWhereKeyUp;
 			this.textControl.LostFocus += this.OnTextControlLostFocus;
-			
 		}
 
 		private void UnbindLogic()
@@ -70,7 +69,8 @@ namespace Greg.Conga.WinUI
 
 		private void OnTextControlLostFocus(object sender, EventArgs e)
 		{
-			this.Visible = false;
+			if (!this.Focused)
+				this.Visible = false;
 		}
 
 		private void OnTextCotrolKeyUp(object sender, KeyEventArgs e)
@@ -139,10 +139,13 @@ namespace Greg.Conga.WinUI
 				l.Click += (s, e1) =>
 				{
 					this.textControl.Text = text.Substring(0, startIndex) + f + text.Substring(startIndex + length);
+					this.Visible = false;
 				};
 				l.Text = f;
-				l.Margin = new Padding(0, 0, 20, 20);
-				l.AutoSize = true;
+				l.Margin = new Padding(0, 0, 4, 4);
+				l.AutoSize = false;
+				l.Width = this.flow.Width - 4;
+				l.Height = lblPosition.Height;
 				this.flow.Controls.Add(l);
 			}
 			this.flow.ResumeLayout();

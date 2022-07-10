@@ -3,6 +3,7 @@ using Greg.Conga.Sdk.Messages;
 using Greg.Conga.Sdk.Messages.Salesforce;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Greg.Conga.Sdk
 {
@@ -73,6 +74,29 @@ namespace Greg.Conga.Sdk
 
 			var request = new QueryRequest(query);
 			var response = service.Execute<QueryResponse>(request);
+
+			if (!string.IsNullOrWhiteSpace(response.ErrorCode))
+			{
+				throw new SalesforceException(response.ErrorCode, response.Message);
+			}
+
+			return response;
+		}
+
+		public static async Task<QueryResponse> RetrieveMultipleAsync(this ICongaService service, string query)
+		{
+			if (service is null)
+			{
+				throw new ArgumentNullException(nameof(service), $"{nameof(service)} cannot be null!");
+			}
+
+			if (string.IsNullOrWhiteSpace(query))
+			{
+				throw new ArgumentNullException(nameof(query), $"'{nameof(query)}' cannot be null or empty.");
+			}
+
+			var request = new QueryRequest(query);
+			var response = await service.ExecuteAsync<QueryResponse>(request);
 
 			if (!string.IsNullOrWhiteSpace(response.ErrorCode))
 			{

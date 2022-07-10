@@ -140,14 +140,14 @@ namespace Greg.Conga.WinUI
 			return true;
 		}
 
-		private void OnEntityNameChanged(object sender, EventArgs e)
+		private async void OnEntityNameChanged(object sender, EventArgs e)
 		{
 			this.Fields = Array.Empty<string>();
 			this.txtEntityName.BackColor = Color.White;
 			try
 			{
-				var metadata = this.metadataRepository.GetMetadataForEntity(this.txtEntityName.Text);
-				this.Fields = metadata.Fields.Select(x => x.Name).ToArray();
+				var metadata = await this.metadataRepository.GetMetadataForEntityAsync(this.txtEntityName.Text);
+				this.Fields = metadata.Fields.Select(x => x.Name).OrderBy(x => x).ToArray();
 				this.txtEntityName.BackColor = ColorPalette.SuccessBackground;
 				toolTip1.SetToolTip(this.txtEntityName, string.Empty);
 			}
@@ -159,15 +159,15 @@ namespace Greg.Conga.WinUI
 			}
 		}
 
-		private void OnExecuteQueryClick(object sender, EventArgs e)
+		private async void OnExecuteQueryClick(object sender, EventArgs e)
 		{
 			try
 			{
 				var query = $"SELECT Id FROM {this.txtEntityName.Text} WHERE {this.textBox1.Text}";
 
-				var result = this.service.RetrieveMultiple(query).Records;
+				var result = await this.service.RetrieveMultipleAsync(query);
 
-				this.resultList.SetObjects(result);
+				this.resultList.SetObjects(result.Records);
 			}
 			catch(Exception ex)
 			{

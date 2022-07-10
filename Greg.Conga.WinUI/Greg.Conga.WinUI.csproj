@@ -80,6 +80,9 @@
     <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
       <HintPath>..\packages\ObjectListView.Official.2.9.1\lib\net20\ObjectListView.dll</HintPath>
     </Reference>
+    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -107,6 +110,12 @@
     </Compile>
     <Compile Include="ConnectionSettingsView.Designer.cs">
       <DependentUpon>ConnectionSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorView.Designer.cs">
+      <DependentUpon>EditorView.cs</DependentUpon>
     </Compile>
     <Compile Include="EntityBrowserControl.cs">
       <SubType>Form</SubType>
@@ -153,6 +162,9 @@
     </Compile>
     <EmbeddedResource Include="ConnectionSettingsView.resx">
       <DependentUpon>ConnectionSettingsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorView.resx">
+      <DependentUpon>EditorView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EntityBrowserControl.resx">
       <DependentUpon>EntityBrowserControl.cs</DependentUpon>

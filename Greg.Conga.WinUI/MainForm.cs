@@ -39,6 +39,9 @@ namespace Greg.Conga.WinUI
 			this.entityBrowserControl = new EntityBrowserControl(metadataRepository, dataRepository);
 			this.entityBrowserControl.Show(this.dockPanel1, DockState.Document);
 
+			var editorView = new EditorView();
+			editorView.Show(this.dockPanel1, DockState.Document);
+
 
 			this.entityQueryControl = new EntityQueryControl(metadataRepository, congaService);
 			this.entityQueryControl.Show(this.dockPanel1, DockState.DockLeft);
