@@ -7,6 +7,7 @@ namespace Greg.Conga.Sdk.Messages
 {
 	public abstract class BaseResponse
 	{
+
 		public string Raw { get; internal set; }
 		public HttpStatusCode StatusCode { get; internal set; }
 		public string StatusDescription { get; internal set; }

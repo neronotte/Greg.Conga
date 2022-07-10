@@ -29,7 +29,7 @@ namespace Greg.Conga.Sdk.Services.Model
 			if (string.IsNullOrWhiteSpace(value)) // questa regola non valida l'obbligatorietà, ma solo la lista valori ove presente
 				return true;
 
-			if (values.Any(x => x.Equals(value)))
+			if (values.Any(x => x.Equals(value, System.StringComparison.Ordinal)))
 				return true;
 
 

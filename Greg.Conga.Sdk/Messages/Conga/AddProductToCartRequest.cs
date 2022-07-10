@@ -4,7 +4,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class AddProductToCartRequest : CongaRequest
 	{
-		public AddProductToCartRequest() : base("POST", "/carts/{CartId}/items")
+		public AddProductToCartRequest() : base(System.Net.Http.HttpMethod.Post, "/carts/{CartId}/items")
 		{
 		}
 

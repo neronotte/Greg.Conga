@@ -97,7 +97,7 @@ namespace Greg.Conga.Sdk.Services
 			return ruleList;
 		}
 
-		private IDataValidationRule CreateRule(string field, string action, string value)
+		private static IDataValidationRule CreateRule(string field, string action, string value)
 		{
 			switch (action)
 			{

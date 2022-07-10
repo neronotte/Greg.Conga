@@ -4,6 +4,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class GetProductRulesResponse : CongaRestResponse<GetProductRulesResponse.MyData[]>
 	{
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 		public class MyData
 		{
 			public string APTS_Ext_ID { get; set; }
@@ -232,5 +233,6 @@ namespace Greg.Conga.Sdk.Messages.Conga
 			public string Frequency { get; set; }
 			public string ProductCode { get; set; }
 		}
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 	}
 }

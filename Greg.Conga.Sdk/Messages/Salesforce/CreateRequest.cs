@@ -9,7 +9,7 @@ namespace Greg.Conga.Sdk.Messages.Salesforce
 	/// <see cref="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm"/>
 	public class CreateRequest : SalesforceRequest
 	{
-		public CreateRequest(string entityName) : base("POST", $"/sobjects/{entityName}/")
+		public CreateRequest(string entityName) : base(System.Net.Http.HttpMethod.Post, $"/sobjects/{entityName}/")
 		{
 			if (string.IsNullOrWhiteSpace(entityName))
 			{

@@ -1,11 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace Greg.Conga.Sdk.Messages.Conga
 {
 
 	public abstract class CongaRequest : BaseRequest
 	{
-		public CongaRequest(string method, string urlPart) : base(method, urlPart)
+		public CongaRequest(HttpMethod method, string urlPart) : base(method, urlPart)
 		{
 		}
 

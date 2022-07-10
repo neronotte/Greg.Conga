@@ -4,7 +4,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class GetMultipleProductRulesRequest : CongaRequest
 	{
-		public GetMultipleProductRulesRequest(params string[] productIds) : base("POST", "/products/rules")
+		public GetMultipleProductRulesRequest(params string[] productIds) : base(System.Net.Http.HttpMethod.Post, "/products/rules")
 		{
 			ProductIds = productIds;
 		}
@@ -14,16 +14,16 @@ namespace Greg.Conga.Sdk.Messages.Conga
 		public override string ToSerializedObject()
 		{
 			var sb = new StringBuilder();
-			sb.Append("[");
+			sb.Append('[');
 
 			for (int i = 0; i < ProductIds.Length; i++)
 			{
 				sb.Append("{ \"Id\": \"").Append(ProductIds[i]).Append("\" }");
 				if (i < ProductIds.Length - 1)
-					sb.Append(",");
+					sb.Append(',');
 			}
 
-			sb.Append("]");
+			sb.Append(']');
 			return sb.ToString();
 		}
 	}

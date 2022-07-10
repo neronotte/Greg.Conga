@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace Greg.Conga.Sdk.Model
 {
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 	[DebuggerDisplay("{Name}")]
 	public class Apttus_Config2__ProductAttributeRule__c
 	{
@@ -69,4 +70,5 @@ namespace Greg.Conga.Sdk.Model
 		public string APTS_Ext_ID__c { get; set; }
 		public string Apttus_Config2__ValueExpression__c { get; set; }
 	}
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 }

@@ -8,7 +8,7 @@ namespace Greg.Conga.Sdk.Messages.Salesforce
 	/// <see cref="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm"/>
 	public class DeleteRequest : SalesforceRequest
 	{
-		public DeleteRequest(string entityName, string id) : base("DELETE", $"/sobjects/{entityName}/{id}")
+		public DeleteRequest(string entityName, string id) : base(System.Net.Http.HttpMethod.Delete, $"/sobjects/{entityName}/{id}")
 		{
 			if (string.IsNullOrWhiteSpace(entityName))
 			{

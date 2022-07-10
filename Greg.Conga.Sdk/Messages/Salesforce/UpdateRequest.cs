@@ -9,7 +9,7 @@ namespace Greg.Conga.Sdk.Messages.Salesforce
 	/// <see cref="https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm"/>
 	public class UpdateRequest : SalesforceRequest
 	{
-		public UpdateRequest(string entityName, string id) : base("PATCH", $"/sobjects/{entityName}/{id}")
+		public UpdateRequest(string entityName, string id) : base(new System.Net.Http.HttpMethod("PATCH"), $"/sobjects/{entityName}/{id}")
 		{
 			if (string.IsNullOrWhiteSpace(entityName))
 			{

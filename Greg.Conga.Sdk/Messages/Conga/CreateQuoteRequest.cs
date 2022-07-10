@@ -4,7 +4,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class CreateProposalRequest : CongaRequest
 	{
-		public CreateProposalRequest() : base("POST", "/carts/{CartId}/proposal")
+		public CreateProposalRequest() : base(System.Net.Http.HttpMethod.Post, "/carts/{CartId}/proposal")
 		{
 		}
 

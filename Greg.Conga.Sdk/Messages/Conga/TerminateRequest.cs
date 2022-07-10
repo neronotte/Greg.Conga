@@ -6,7 +6,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class TerminateRequest : CongaRequest
 	{
-		public TerminateRequest(string cartId) : base("POST", $"/assets/{cartId}/terminate")
+		public TerminateRequest(string cartId) : base(System.Net.Http.HttpMethod.Post, $"/assets/{cartId}/terminate")
 		{
 			this.CartId = cartId;
 		}

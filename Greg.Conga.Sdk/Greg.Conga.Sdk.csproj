@@ -1,21 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <RootNamespace>Greg.Conga.Sdk</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.0-alpha1</Version>
+    <Version>1.0.3-alpha</Version>
     <Company>_neronotte</Company>
     <Authors>_neronotte</Authors>
     <PackageProjectUrl>https://github.com/neronotte/Greg.Conga</PackageProjectUrl>
     <RepositoryUrl>https://github.com/neronotte/Greg.Conga.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <PackageTags>Conga Salesforce SFDC SDK API</PackageTags>
+    <ApplicationIcon>blog.ico</ApplicationIcon>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>Simple and lightweight .NET SDK to access Conga and SFDC API</Description>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="blog.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
 </Project>

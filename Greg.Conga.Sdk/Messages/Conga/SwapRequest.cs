@@ -5,7 +5,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class SwapRequest : CongaRequest
 	{
-		public SwapRequest() : base("POST", "/assets/swap")
+		public SwapRequest() : base(System.Net.Http.HttpMethod.Post, "/assets/swap")
 		{
 		}
 

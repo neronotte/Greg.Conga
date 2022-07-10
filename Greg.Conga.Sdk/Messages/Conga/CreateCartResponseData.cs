@@ -4,6 +4,7 @@ namespace Greg.Conga.Sdk.Messages.Conga
 {
 	public class CreateCartResponseData
 	{
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 		public string Id { get; set; }
 		public string OwnerId { get; set; }
 		public bool IsDeleted { get; set; }
@@ -56,5 +57,8 @@ namespace Greg.Conga.Sdk.Messages.Conga
 		public string egl_flag_administrative_communication__c { get; set; }
 		public string egl_flag_administrative_process__c { get; set; }
 		public string egl_skipStateModel__c { get; set; }
+
+
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 	}
 }

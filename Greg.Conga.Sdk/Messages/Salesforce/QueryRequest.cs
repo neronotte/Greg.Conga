@@ -1,4 +1,6 @@
-﻿namespace Greg.Conga.Sdk.Messages.Salesforce
+﻿using System;
+
+namespace Greg.Conga.Sdk.Messages.Salesforce
 {
 	public class QueryRequest : SalesforceRequest
 	{
@@ -6,7 +8,7 @@
 		{
 			if (string.IsNullOrWhiteSpace(response.NextRecordsUrl)) return null;
 
-			var startIndex = response.NextRecordsUrl.IndexOf("/query");
+			var startIndex = response.NextRecordsUrl.IndexOf("/query", StringComparison.OrdinalIgnoreCase);
 			var urlPart = response.NextRecordsUrl.Substring(startIndex);
 
 			return new QueryRequest()
@@ -16,7 +18,7 @@
 		}
 
 
-		public QueryRequest() : base("GET", "/query?q={query}")
+		public QueryRequest() : base(System.Net.Http.HttpMethod.Get, "/query?q={query}")
 		{
 			HasBody = false;
 		}
