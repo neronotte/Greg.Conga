@@ -24,6 +24,19 @@ namespace Greg.Conga.Sdk
 			return congaService;
 		}
 
+		[TestMethod]
+		public void UpdateContact()
+		{
+			var congaService = GetNewService();
+			var contactId = "0037a00001gDMtOAAW";
+			var cf = "JSSLRS83A01C354E";
+
+			congaService.Update("contact", contactId, new
+			{
+				egl_contact_fiscalcode__c = cf
+			});
+		}
+
 		
 		[TestMethod]
 		public void PaginatedQueryExample()

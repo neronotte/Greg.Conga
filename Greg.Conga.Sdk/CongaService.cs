@@ -228,7 +228,7 @@ namespace Greg.Conga.Sdk
 		private static TResponse ParseResponseText<TResponse>(HttpResponseMessage webResponse, JsonSerializerSettings settings, string responseText) 
 			where TResponse : BaseResponse, new()
 		{
-			if (responseText == null)
+			if (string.IsNullOrWhiteSpace(responseText))
 			{
 				var congaResponse = new TResponse();
 				congaResponse.StatusCode = webResponse.StatusCode;
