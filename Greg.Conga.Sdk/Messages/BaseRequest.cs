@@ -41,5 +41,9 @@ namespace Greg.Conga.Sdk.Messages
 				NullValueHandling = NullValueHandling.Ignore
 			});
 		}
+
+		internal virtual void AddAdditionalHeaders(HttpRequestMessage request1)
+		{
+		}
 	}
 }

@@ -124,10 +124,12 @@ namespace Greg.Conga.Sdk
 			{
 				request1.Headers.Add("x-storefront", this.Endpoint.Storefront);
 				request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.Credentials.AccessToken);
+				request.AddAdditionalHeaders(request1);
 
 				if (request.HasBody)
 				{
-					request1.Content = new StringContent(request.ToSerializedObject(), Encoding.UTF8, "application/json");
+					var contentText = request.ToSerializedObject();
+					request1.Content = new StringContent(contentText, Encoding.UTF8, "application/json");
 				}
 
 
@@ -135,9 +137,13 @@ namespace Greg.Conga.Sdk
 				{
 					try
 					{
-						response.EnsureSuccessStatusCode();
-
-						return GetCongaResponse<TResponse>(response, settings);
+						var congaResponse = GetCongaResponse<TResponse>(response, settings);
+						
+						if (response.StatusCode != HttpStatusCode.OK)
+						{
+							throw new SdkException(request, congaResponse, congaResponse.StatusDescription);
+						}
+						return congaResponse;
 					}
 					catch (HttpRequestException ex)
 					{
@@ -179,9 +185,13 @@ namespace Greg.Conga.Sdk
 				{
 					try
 					{
-						response.EnsureSuccessStatusCode();
+						var congaResponse = await GetCongaResponseAsync<TResponse>(response, settings);
 
-						return await GetCongaResponseAsync<TResponse>(response, settings);
+						if (response.StatusCode != HttpStatusCode.OK)
+						{
+							throw new SdkException(request, congaResponse, congaResponse.StatusDescription);
+						}
+						return congaResponse;
 					}
 					catch (HttpRequestException ex)
 					{
