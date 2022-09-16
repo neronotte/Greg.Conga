@@ -9,6 +9,7 @@ using Greg.Conga.Sdk.TestSuite.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 
@@ -425,22 +426,36 @@ limit 10");
 
 			var cartId = createCartResponse.Data[0].Id;
 
+
 			var assetChangeRequest = new ChangeAssetRequest(assetId);
 			assetChangeRequest.Step = AssetChangeRequest_Step.CHANGE_ASSET;
 			assetChangeRequest.CartId = cartId;
 			assetChangeRequest.AccountId = asset.Apttus_Config2__AccountId__c;
-
-
 			var assetChangeResponse = congaService.Execute<ChangeAssetResponse>(assetChangeRequest);
 			Assert.IsNotNull(assetChangeResponse);
 
 
+
+			assetChangeRequest.Step = AssetChangeRequest_Step.VALIDATE;
+			assetChangeResponse = congaService.Execute<ChangeAssetResponse>(assetChangeRequest);
+			Assert.IsNotNull(assetChangeResponse);
+
+
+			assetChangeRequest.Step = AssetChangeRequest_Step.RUN_CONSTRAINTS;
+			assetChangeResponse = congaService.Execute<ChangeAssetResponse>(assetChangeRequest);
+			Assert.IsNotNull(assetChangeResponse);
+
+
+			assetChangeRequest.Step = AssetChangeRequest_Step.REPRICE;
+			assetChangeResponse = congaService.Execute<ChangeAssetResponse>(assetChangeRequest);
+			Assert.IsNotNull(assetChangeResponse);
+
+
 			var cartPriceRequest = new PriceCartRequest(cartId);
-			cartPriceRequest.Mode = CartPriceRequestMode.Default;
+			cartPriceRequest.Mode = CartPriceRequestMode.Turbo;
 
 			var cartPriceResponse = congaService.Execute<PriceCartResponse>(cartPriceRequest);
 			Assert.IsNotNull(cartPriceResponse);
-
 		}
 
 

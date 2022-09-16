@@ -139,7 +139,7 @@ namespace Greg.Conga.Sdk
 					{
 						var congaResponse = GetCongaResponse<TResponse>(response, settings);
 						
-						if (response.StatusCode != HttpStatusCode.OK)
+						if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NoContent)
 						{
 							throw new SdkException(request, congaResponse, congaResponse.StatusDescription);
 						}
@@ -187,7 +187,7 @@ namespace Greg.Conga.Sdk
 					{
 						var congaResponse = await GetCongaResponseAsync<TResponse>(response, settings);
 
-						if (response.StatusCode != HttpStatusCode.OK)
+						if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NoContent)
 						{
 							throw new SdkException(request, congaResponse, congaResponse.StatusDescription);
 						}
