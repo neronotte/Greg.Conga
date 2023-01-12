@@ -66,15 +66,15 @@ namespace Greg.Conga.Sdk.Services
 
 			var filter1 = request.AddOrFilter();
 			filter1.AddCondition("ProductScope", ConditionOperator.In, productScopeArray1);
-			filter1.AddCondition("ProductScope", ConditionOperator.In, productScopeArray2);
+			filter1.AddCondition("ProductScope", ConditionOperator.Includes, productScopeArray2);
 
 			var filter2 = request.AddOrFilter();
 			filter2.AddCondition("ProductFamilyScope", ConditionOperator.In, productScopeArray1);
-			filter2.AddCondition("ProductFamilyScope", ConditionOperator.In, productScopeArray3);
+			filter2.AddCondition("ProductFamilyScope", ConditionOperator.Includes, productScopeArray3);
 
 			var filter3 = request.AddOrFilter();
 			filter3.AddCondition("ProductGroupScope", ConditionOperator.In, productScopeArray1);
-			filter3.AddCondition("ProductGroupScope", ConditionOperator.In, productScopeArray4);
+			filter3.AddCondition("ProductGroupScope", ConditionOperator.Includes, productScopeArray4);
 
 			request.AddChild("Apttus_Config2__ProductAttributeRuleActions__r");
 

@@ -52,6 +52,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedTestSuite.cs" />
     <Compile Include="Factories\CongaCredentialsFactory.cs" />
     <Compile Include="Factories\CongaEndpointFactory.cs" />
     <Compile Include="Factories\CongaServiceFactory.cs" />
