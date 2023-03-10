@@ -19,7 +19,7 @@ namespace Greg.Conga.Sdk.Services.Model
 			this.Field = field;
 			this.ValueString = valueString;
 			this.IsEnabled = isEnabled;
-			this.values = valueString.Split(';');
+			this.values = valueString.Trim('\'').Split(';');
 		}
 
 		public bool TryValidate(Dictionary<string, string> propertyDict, out string errorMessage)

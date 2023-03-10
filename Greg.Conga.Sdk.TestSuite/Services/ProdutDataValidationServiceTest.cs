@@ -16,12 +16,12 @@ namespace Greg.Conga.Sdk.Services
 			var productId = "01t7a00000DVux6AAD";
 
 			var properties = new Dictionary<string, string>();
-			properties["egl_POD__c"] = "IT001E9878225";
-			properties["egl_power_consumption_declared__c"] = "1200";
-			properties["egl_power_consumption__c"] = "1200";
-			properties["egl_isresidential__c"] = "true";
-			properties["egl_Hours_Bundle__c"] = "Monoraria";
-			properties["egl_combined_sale_insurance__c"] = "No";
+			properties["Apttus_Config2__ProductAttributeValue__c.egl_POD__c"] = "IT001E9878225";
+			properties["Apttus_Config2__ProductAttributeValue__c.egl_power_consumption_declared__c"] = "1200";
+			properties["Apttus_Config2__ProductAttributeValue__c.egl_power_consumption__c"] = "1200";
+			properties["Apttus_Config2__ProductAttributeValue__c.egl_isresidential__c"] = "true";
+			properties["Apttus_Config2__ProductAttributeValue__c.egl_Hours_Bundle__c"] = "Monoraria";
+			properties["Apttus_Config2__ProductAttributeValue__c.egl_combined_sale_insurance__c"] = "No";
 
 			var task = service.TryValidateAsync(productId, properties, "SWITCH IN");
 
