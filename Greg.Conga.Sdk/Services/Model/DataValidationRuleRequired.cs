@@ -3,15 +3,17 @@ using System.Diagnostics;
 
 namespace Greg.Conga.Sdk.Services.Model
 {
-	[DebuggerDisplay("Required <{Field}>")]
+	[DebuggerDisplay("Required <{Field}> ({IsEnabled})")]
 	public class DataValidationRuleRequired : IDataValidationRule
 	{
-		public DataValidationRuleRequired(string field)
+		public DataValidationRuleRequired(string field, bool isEnabled)
 		{
 			this.Field = field;
+			this.IsEnabled = isEnabled;
 		}
 
 		public string Field { get; }
+		public bool IsEnabled { get; }
 		public int Order { get; } = 4;
 
 

@@ -4,19 +4,21 @@ using System.Linq;
 
 namespace Greg.Conga.Sdk.Services.Model
 {
-	[DebuggerDisplay("Allow <{Field}> values <{ValueString}>")]
+	[DebuggerDisplay("Allow <{Field}> values <{ValueString}> ({IsEnabled})")]
 	public class DataValidationRuleAllow : IDataValidationRule
 	{
 		public string Field { get; }
 		public string ValueString { get; }
+		public bool IsEnabled { get; }
 		public int Order { get; } = 5;
 
 		private readonly string[] values;
 
-		public DataValidationRuleAllow(string field, string valueString)
+		public DataValidationRuleAllow(string field, string valueString, bool isEnabled)
 		{
 			this.Field = field;
 			this.ValueString = valueString;
+			this.IsEnabled = isEnabled;
 			this.values = valueString.Split(';');
 		}
 

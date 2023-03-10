@@ -13,14 +13,23 @@ namespace Greg.Conga.Sdk.Services
 			var congaService = CongaServiceFactory.GetNewService();
 			var service = new ProductDataValidationService(congaService);
 
-
-			var productId = "01t7a00000AnInVAAV";
+			var productId = "01t7a00000DVux6AAD";
 
 			var properties = new Dictionary<string, string>();
+			properties["egl_POD__c"] = "IT001E9878225";
+			properties["egl_power_consumption_declared__c"] = "1200";
+			properties["egl_power_consumption__c"] = "1200";
+			properties["egl_isresidential__c"] = "true";
+			properties["egl_Hours_Bundle__c"] = "Monoraria";
+			properties["egl_combined_sale_insurance__c"] = "No";
 
-			var result = service.TryValidate(productId, properties, out List<string> validationErrors);
+			var task = service.TryValidateAsync(productId, properties, "SWITCH IN");
 
-			Assert.IsFalse(result);
+			task.Wait();
+
+			var result = task.Result;
+
+			Assert.IsTrue(result.Result);
 		}
 	}
 }

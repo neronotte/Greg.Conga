@@ -3,15 +3,17 @@ using System.Diagnostics;
 
 namespace Greg.Conga.Sdk.Services.Model
 {
-	[DebuggerDisplay("Disable <{Field}>")]
+	[DebuggerDisplay("Disable <{Field}> ({IsEnabled})")]
 	public class DataValidationRuleDisabled : IDataValidationRule
 	{
-		public DataValidationRuleDisabled(string field)
+		public DataValidationRuleDisabled(string field, bool isEnabled)
 		{
 			this.Field = field;
+			this.IsEnabled = isEnabled;
 		}
 
 		public string Field { get; }
+		public bool IsEnabled { get; }
 		public int Order { get; } = 2;
 
 
