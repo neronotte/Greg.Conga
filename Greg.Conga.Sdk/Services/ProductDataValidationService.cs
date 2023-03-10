@@ -5,6 +5,7 @@ using Greg.Conga.Sdk.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Greg.Conga.Sdk.Services
 {
@@ -17,17 +18,14 @@ namespace Greg.Conga.Sdk.Services
 			this.congaService = service;
 		}
 
-		
+
 
 		public bool TryValidate(string productId, Dictionary<string, string> propertyDict, out List<string> validationErrorList)
 		{
 			var productGroupArray = GetProductGroupsByProductId(productId);
-
-
 			var rules = GetRules(productId, productGroupArray);
 
 			validationErrorList = new List<string>();
-
 			foreach (var rule in rules)
 			{
 				if (!rule.TryValidate(propertyDict, out string errorMessage))
@@ -35,9 +33,28 @@ namespace Greg.Conga.Sdk.Services
 					validationErrorList.Add(errorMessage);
 				}
 			}
-
 			return validationErrorList.Count == 0;
 		}
+
+
+
+		public async Task<(bool Result, List<string> ValidationErrorList)> TryValidateAsync(string productId, Dictionary<string, string> propertyDict)
+		{
+			var productGroupArray = await GetProductGroupsByProductIdAsync(productId);
+			var rules = await GetRulesAsync(productId, productGroupArray);
+
+			var validationErrorList = new List<string>();
+			foreach (var rule in rules)
+			{
+				if (!rule.TryValidate(propertyDict, out string errorMessage))
+				{
+					validationErrorList.Add(errorMessage);
+				}
+			}
+			return (validationErrorList.Count == 0, validationErrorList);
+		}
+
+
 
 
 
@@ -48,22 +65,27 @@ namespace Greg.Conga.Sdk.Services
 			var productGroupArray = response1.Data.ProductGroups.Select(x => x.ProductGroupId).ToArray();
 			return productGroupArray;
 		}
+		private async Task<string[]> GetProductGroupsByProductIdAsync(string productId)
+		{
+			var request1 = new GetProductRequest(productId);
+			var response1 = await congaService.ExecuteAsync<GetProductResponse>(request1);
+			var productGroupArray = response1.Data.ProductGroups.Select(x => x.ProductGroupId).ToArray();
+			return productGroupArray;
+		}
 
 
-
-
-
-		private IReadOnlyCollection<IDataValidationRule> GetRules(string productId, string[] productGroupArray)
+		private static CongaQueryRequest CreateQueryForProductAttributes(string productId, string[] productGroupArray)
 		{
 			string[] productScopeArray1 = new[] { "", "All" };
 			string[] productScopeArray2 = new[] { productId };
 			string[] productScopeArray3 = new[] { "Commodity" };
 			string[] productScopeArray4 = productGroupArray;
 
+
 			var request = new CongaQueryRequest("Apttus_Config2__ProductAttributeRule__c");
 
 			request.AddCondition("Active", ConditionOperator.Equal, true);
-			
+
 			//// devo escludere le regole condizionali
 			//request.AddCondition("Apttus_Config2__ConditionCriteriaExpression__c", ConditionOperator.);
 
@@ -81,8 +103,12 @@ namespace Greg.Conga.Sdk.Services
 
 			request.AddChild("Apttus_Config2__ProductAttributeRuleActions__r");
 
-			var response = congaService.Execute<CongaQueryResponse<Apttus_Config2__ProductAttributeRule__c>>(request);
+			return request;
+		}
 
+
+		private static IReadOnlyCollection<IDataValidationRule> ConvertQueryResponseToRuleList(CongaQueryResponse<Apttus_Config2__ProductAttributeRule__c> response)
+		{
 			var ruleList = (from par in response.Data
 							where string.IsNullOrWhiteSpace(par.Apttus_Config2__ConditionCriteriaExpression__c) // devo escludere le regole condizionali
 							from para in par.Apttus_Config2__ProductAttributeRuleActions__r.records
@@ -95,9 +121,27 @@ namespace Greg.Conga.Sdk.Services
 							.Distinct()
 							.Select(x => CreateRule(x.Field, x.Action, x.Value))
 							.OrderBy(x => x.Order)
-							.ThenBy(x =>x.Field)
+							.ThenBy(x => x.Field)
 							.ToList();
 
+			return ruleList;
+		}
+
+
+		private async Task<IReadOnlyCollection<IDataValidationRule>> GetRulesAsync(string productId, string[] productGroupArray)
+		{
+			var request = CreateQueryForProductAttributes(productId, productGroupArray);
+			var response = await congaService.ExecuteAsync<CongaQueryResponse<Apttus_Config2__ProductAttributeRule__c>>(request);
+			var ruleList = ConvertQueryResponseToRuleList(response);
+			return ruleList;
+		}
+
+
+		private IReadOnlyCollection<IDataValidationRule> GetRules(string productId, string[] productGroupArray)
+		{
+			var request = CreateQueryForProductAttributes(productId, productGroupArray);
+			var response = congaService.Execute<CongaQueryResponse<Apttus_Config2__ProductAttributeRule__c>>(request);
+			var ruleList = ConvertQueryResponseToRuleList(response);
 			return ruleList;
 		}
 
