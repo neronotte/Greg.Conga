@@ -64,8 +64,8 @@ namespace Greg.Conga.Sdk.Services
 
 			request.AddCondition("Active", ConditionOperator.Equal, true);
 			
-			// devo escludere le regole condizionali
-			request.AddCondition("Apttus_Config2__ConditionCriteriaExpression__c", ConditionOperator.Null);
+			//// devo escludere le regole condizionali
+			//request.AddCondition("Apttus_Config2__ConditionCriteriaExpression__c", ConditionOperator.);
 
 			var filter1 = request.AddOrFilter();
 			filter1.AddCondition("ProductScope", ConditionOperator.In, productScopeArray1);
@@ -84,13 +84,13 @@ namespace Greg.Conga.Sdk.Services
 			var response = congaService.Execute<CongaQueryResponse<Apttus_Config2__ProductAttributeRule__c>>(request);
 
 			var ruleList = (from par in response.Data
+							where string.IsNullOrWhiteSpace(par.Apttus_Config2__ConditionCriteriaExpression__c) // devo escludere le regole condizionali
 							from para in par.Apttus_Config2__ProductAttributeRuleActions__r.records
 							select new
 							{
 								Field = para.Apttus_Config2__Field__c,
 								Action = para.Apttus_Config2__Action__c,
-								Value = para.Apttus_Config2__ValueExpression__c,
-								Condition = par.Apttus_Config2__ConditionCriteriaExpression__c
+								Value = para.Apttus_Config2__ValueExpression__c
 							})
 							.Distinct()
 							.Select(x => CreateRule(x.Field, x.Action, x.Value))
