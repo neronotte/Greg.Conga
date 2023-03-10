@@ -17,7 +17,7 @@ namespace Greg.Conga.Sdk.Services.Model
 		{
 			this.Field = field;
 			this.ValueString = valueString;
-			this.values = valueString.Split(',');
+			this.values = valueString.Split(';');
 		}
 
 		public bool TryValidate(Dictionary<string, string> propertyDict, out string errorMessage)
