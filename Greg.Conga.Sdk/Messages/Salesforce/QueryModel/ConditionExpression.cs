@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Greg.Conga.Sdk.Messages.Salesforce.QueryModel
@@ -34,6 +35,12 @@ namespace Greg.Conga.Sdk.Messages.Salesforce.QueryModel
                 {
                     sb.Append(ParseValue(Values[0]));
                 }
+                else
+				{
+					sb.Append('(');
+					sb.Append(string.Join(", ", Values.Select(x => ParseValue(x))));
+					sb.Append(')');
+				}
             }
 
             return sb.ToString();

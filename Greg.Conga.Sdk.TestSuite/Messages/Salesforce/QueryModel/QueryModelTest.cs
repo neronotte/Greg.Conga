@@ -98,6 +98,16 @@ namespace Greg.Conga.Sdk.Messages.Salesforce.QueryModel
 			Assert.AreEqual("SELECT Id FROM account WHERE CreatedDate = LAST_FISCAL_QUARTER AND FirstName = 'Riccardo'", query.ToString());
 		}
 
+		[TestMethod]
+		public void QueryWithTableAndConditions5()
+		{
+			var query = new QueryExpression("account");
+			query.AddCustomCondition("CreatedDate = LAST_FISCAL_QUARTER");
+			query.AddCondition("FirstName", ConditionOperator.In, "Riccardo", "Luca");
+
+			Assert.AreEqual("SELECT Id FROM account WHERE CreatedDate = LAST_FISCAL_QUARTER AND FirstName IN ('Riccardo', 'Luca')", query.ToString());
+		}
+
 
 
 
