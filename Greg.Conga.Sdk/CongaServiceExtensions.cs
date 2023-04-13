@@ -9,6 +9,17 @@ namespace Greg.Conga.Sdk
 {
 	public static class CongaServiceExtensions
 	{
+		public static IReadOnlyCollection<DynamicEntity> RetrieveAll(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
+		{
+			return RetrieveAll<DynamicEntity>(service, query.ToString(), log);
+		}
+
+
+		public static IReadOnlyCollection<T> RetrieveAll<T>(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
+		{
+			return RetrieveAll<T>(service, query.ToString(), log);
+		}
+
 		public static IReadOnlyCollection<DynamicEntity> RetrieveAll(this ICongaService service, string query, Action<string> log = null)
 		{
 			return RetrieveAll<DynamicEntity>(service, query, log);
@@ -57,6 +68,17 @@ namespace Greg.Conga.Sdk
 
 			return resultList;
 		}
+
+		public static async Task<IReadOnlyCollection<DynamicEntity>> RetrieveAllAsync(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
+		{
+			return await RetrieveAllAsync<DynamicEntity>(service, query.ToString(), log);
+		}
+
+		public static async Task<IReadOnlyCollection<T>> RetrieveAllAsync<T>(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
+		{
+			return await RetrieveAllAsync<T>(service, query.ToString(), log);
+		}
+
 		public static async Task<IReadOnlyCollection<DynamicEntity>> RetrieveAllAsync(this ICongaService service, string query, Action<string> log = null)
 		{
 			return await RetrieveAllAsync<DynamicEntity>(service, query, log);
@@ -106,7 +128,10 @@ namespace Greg.Conga.Sdk
 			return resultList;
 		}
 
-
+		public static QueryResponse RetrieveMultiple(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query)
+		{
+			return RetrieveMultiple(service, query.ToString());
+		}
 
 		public static QueryResponse RetrieveMultiple(this ICongaService service, string query)
 		{
@@ -131,6 +156,11 @@ namespace Greg.Conga.Sdk
 			return response;
 		}
 
+
+		public static async Task<QueryResponse> RetrieveMultipleAsync(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query)
+		{
+			return await RetrieveMultipleAsync(service, query.ToString());
+		}
 
 
 		public static async Task<QueryResponse> RetrieveMultipleAsync(this ICongaService service, string query)

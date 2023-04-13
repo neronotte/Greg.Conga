@@ -56,6 +56,7 @@
     <Compile Include="Factories\CongaCredentialsFactory.cs" />
     <Compile Include="Factories\CongaEndpointFactory.cs" />
     <Compile Include="Factories\CongaServiceFactory.cs" />
+    <Compile Include="Messages\Salesforce\QueryModel\QueryModelTest.cs" />
     <Compile Include="Services\ProdutDataValidationServiceTest.cs" />
     <Compile Include="CongaServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
