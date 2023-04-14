@@ -1,6 +1,8 @@
 ﻿using Greg.Conga.Sdk.Exceptions;
 using Greg.Conga.Sdk.Messages;
 using Greg.Conga.Sdk.Messages.Salesforce;
+using Greg.Conga.Sdk.Messages.Salesforce.QueryModel;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +11,42 @@ namespace Greg.Conga.Sdk
 {
 	public static class CongaServiceExtensions
 	{
+		public static async Task<DataTable> RetrieveAllDataTableAsync(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
+		{
+			if (service == null)
+				throw new ArgumentNullException(nameof(service));
+			if (query == null)
+				throw new ArgumentNullException(nameof(query));
+
+
+			var recordList = await service.RetrieveAllAsync<JObject>(query, log);
+			return DataTable.From(query, recordList, log);
+		}
+
+
+		public static async Task<DataTable> RetrieveMultipleDataTableAsync(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
+		{
+			if (service == null)
+				throw new ArgumentNullException(nameof(service));
+			if (query == null)
+				throw new ArgumentNullException(nameof(query));
+
+
+
+			var request = new QueryRequest(query.ToString());
+			var response = await service.ExecuteAsync<QueryResponse<JObject>>(request);
+
+			if (!string.IsNullOrWhiteSpace(response.ErrorCode))
+			{
+				throw new SalesforceException(response.ErrorCode, response.Message);
+			}
+
+			var recordList = response.Records;
+			return DataTable.From(query, recordList, log);
+		}
+
+
+
 		public static IReadOnlyCollection<DynamicEntity> RetrieveAll(this ICongaService service, Greg.Conga.Sdk.Messages.Salesforce.QueryModel.QueryExpression query, Action<string> log = null)
 		{
 			return RetrieveAll<DynamicEntity>(service, query.ToString(), log);
