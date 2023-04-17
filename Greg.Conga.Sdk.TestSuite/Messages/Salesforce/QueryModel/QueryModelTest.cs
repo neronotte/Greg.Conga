@@ -113,15 +113,6 @@ namespace Greg.Conga.Sdk.Messages.Salesforce.QueryModel
 
 
 
-
-
-
-
-
-
-
-
-
 		[TestMethod]
 		public void QueryWithTableAndGroup1()
 		{

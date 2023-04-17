@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 
 namespace Greg.Conga.Sdk.Messages.Salesforce.QueryModel
 {
-	class ColumnDataExtractor
+    public class ColumnDataExtractor
 	{
 		public ColumnDataExtractor(string columnName)
 		{
@@ -12,10 +11,10 @@ namespace Greg.Conga.Sdk.Messages.Salesforce.QueryModel
 			this.Parts = Parse(columnName);
 		}
 
-		private static string[] Parse(string columnName)
+		public static string[] Parse(string columnName)
 		{
 			if (string.IsNullOrWhiteSpace(columnName)) return Array.Empty<string>();
-			if (columnName.Contains('(')) return Array.Empty<string>();
+			if (columnName.Contains("(")) return Array.Empty<string>();
 			return columnName.Split('.');
 		}
 
