@@ -1,7 +1,9 @@
 ﻿using Greg.Conga.Sdk.Messages.Conga;
 using Greg.Conga.Sdk.Messages.Conga.Cart;
+using Greg.Conga.Sdk.Messages.Salesforce;
 using Greg.Conga.Sdk.TestSuite.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Net.Http;
 
 namespace Greg.Conga.Sdk
 {
@@ -46,6 +48,34 @@ namespace Greg.Conga.Sdk
 
 			var res2 = conga.Execute<AddProductToCartResponse>(req2);
 			Assert.IsNotNull(res2.Data);
+		}
+
+
+
+		[TestMethod]
+		public void TestCompositeRequest()
+		{
+			var conga = GetNewService();
+
+			var request = new CompositeRequest();
+			request.Add(HttpMethod.Get, "/services/data/v58/query?q=SELECT Id FROM Account LIMIT 10", "Query1");
+			request.Add(HttpMethod.Get, "/services/data/v54.0/query?q=select Id, egl_federationidentifier__c from User order by egl_federationidentifier__c", "Query2");
+
+			var response = conga.Execute<CompositeResponse>(request);
+			Assert.IsNotNull(response);
+			Assert.IsNotNull(response.Children);
+			Assert.AreEqual(2, response.Children.Count);
+
+			var error1 = response.Children[0].Error;
+			Assert.IsNotNull(error1);
+
+			var queryResponse1 = response.Children[0].GetBody<QueryResponse>();
+			Assert.IsNotNull(queryResponse1);
+
+
+			var queryResponse2 = response.Children[1].GetBody<QueryResponse>();
+			Assert.IsNotNull(queryResponse2);
+
 		}
 	}
 }

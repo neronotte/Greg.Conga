@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Greg.Conga.Sdk.Messages
 {
-	public class DynamicObject : Dictionary<string, object>
+    public class DynamicObject : Dictionary<string, object>
 	{
 		public DynamicObject(string type)
 		{
