@@ -14,8 +14,9 @@ namespace Greg.Conga.Sdk.Messages.Conga.Asset
         [JsonIgnore]
         public string CartId { get; }
 
-        [JsonProperty("CancelDate", ItemConverterType = typeof(DateTimeToStringConverter), ItemConverterParameters = new[] { "yyyy-MM-dd" })]
-        public DateTime CancelDate { get; }
+        [JsonProperty("cancelDate")]
+        [JsonConverter(typeof(DateTimeToStringConverter), "yyyy-MM-dd")]
+        public DateTime CancelDate { get; set; }
 
         [JsonProperty("assetIds")]
         public string[] AssetIds { get; set; }

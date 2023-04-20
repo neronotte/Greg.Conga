@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 
 namespace Greg.Conga.Sdk.Messages.Conga.Cart
