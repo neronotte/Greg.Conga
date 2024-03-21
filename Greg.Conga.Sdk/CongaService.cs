@@ -23,7 +23,7 @@ namespace Greg.Conga.Sdk
 
 		public LoginResponse Credentials { get; private set; }
 
-
+		public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(100);
 
 
 
@@ -122,6 +122,7 @@ namespace Greg.Conga.Sdk
 			using (var client = new HttpClient())
 			using (var request1 = new HttpRequestMessage(request.Method, uri))
 			{
+				client.Timeout = Timeout;
 				request1.Headers.Add("x-storefront", this.Endpoint.Storefront);
 				request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.Credentials.AccessToken);
 				request.AddAdditionalHeaders(request1);
@@ -172,6 +173,7 @@ namespace Greg.Conga.Sdk
 			using (var client = new HttpClient())
 			using (var request1 = new HttpRequestMessage(request.Method, uri))
 			{
+				client.Timeout = Timeout;
 				request1.Headers.Add("x-storefront", this.Endpoint.Storefront);
 				request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.Credentials.AccessToken);
 
